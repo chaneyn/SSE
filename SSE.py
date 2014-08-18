@@ -13,6 +13,10 @@ import datetime
 import time
 import pickle
 import random
+import gdal
+import osgeo
+from osgeo import osr
+
 #Load R libraries
 r('library("gstat")')
 r('library("sp")')
@@ -544,6 +548,58 @@ def Covariance_Matrix(data_measurements,grid_background,vg_fit,nlat,nlon,undef,r
 
  return C
 
+def retrieve_metadata(raster):
 
+ metadata = {}
+ #Extract coordinates and projection
+ ds = gdal.Open(raster)
+ gt = ds.GetGeoTransform()
+ cols = ds.RasterXSize
+ rows = ds.RasterYSize
+ srs = osgeo.osr.SpatialReference()
+ srs.ImportFromWkt(ds.GetProjection())
+ metadata['proj4'] = srs.ExportToProj4()
+ metadata['minx'] = gt[0]
+ metadata['miny'] = gt[3]+rows*gt[5]
+ metadata['maxx'] = gt[0]+cols*gt[1]
+ metadata['maxy'] = gt[3]
+ metadata['resx'] = gt[1]
+ metadata['resy'] = gt[5]
+ metadata['gt'] = gt
+ metadata['nx'] = cols
+ metadata['ny'] = rows
+ metadata['projection'] = ds.GetProjection()
 
+ return metadata
 
+def read_raster(file):
+
+ #Read in the raster
+ dataset = gdal.Open(file)
+
+ #Get dimensons
+ nx = dataset.RasterXSize
+ ny = dataset.RasterYSize
+
+ #Retrieve band
+ band = dataset.GetRasterBand(1)
+
+ #Convert to numpy array
+ data = band.ReadAsArray(0,0,nx,ny).astype(np.float32)
+
+ return data
+
+def write_raster(data,metadata,file):
+
+ #Create file
+ driver = gdal.GetDriverByName('GTiff')
+ ds = driver.Create(file,metadata['nx'],metadata['ny'],1,gdal.GDT_Float32)
+
+ #Set geo information
+ ds.SetGeoTransform(metadata['gt'])
+ ds.SetProjection(metadata['projection'])
+ outband = ds.GetRasterBand(1)
+ outband.WriteArray(data,0,0)
+ ds = None
+
+ return 
