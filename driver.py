@@ -1,41 +1,13 @@
 from SSE import *
-import datetime
-import cPickle as pickle
-import sys
-sys.path.append("/home/ice/nchaney/UTILS/PYTHON")
-import IO
-import gdal
 
-#Script to drive the comparison of methods to merge stations and gridded data
-station_coords = '/home/raid20/nchaney/Data/Met_Data/Mesonet_Test/Mesonet_Stations.txt'
-station_data_file = '/home/ice/nchaney/PROJECTS/SM_validation/SENSITIVITY/SM_LR_2001-2009_1hr.pck'#'/home/ice/nchaney/Dropbox/33883094.csv'
-file_in = 'original.tif'
-file_out = 'corrected.tif'
-file_station = 'station_data.txt'
+#Change these files to your data. The formats need to match.
+file_in = 'example/original.tif'
+file_out = 'example/corrected.tif'
+file_station = 'example/station_data.txt'
 undef = -9.99e+08
-'''minlat = 31.45
-minlon = -83.78
-nlat = 40
-nlon = 35
-res = 2*0.00416666666666570
-maxlat = minlat + res*(nlat-1) - res/2
-maxlon = minlon + res*(nlon-1) - res/2
-dims = {}
-dims['minlat'] = minlat #-89.8750
-dims['minlon'] = minlon #0.1250
-dims['nlat'] = nlat #720
-dims['nlon'] = nlon #1440
-dims['res'] = res
-dims['maxlat'] = dims['minlat'] + dims['res']*(dims['nlat']-1)
-dims['maxlon'] = dims['minlon'] + dims['res']*(dims['nlon']-1)
-dims['undef'] = -9.99e+08
-time = datetime.datetime(2004,1,5,18)
-#ftime = datetime.datetime(2004,1,31,23)
-dt = datetime.timedelta(hours=1)'''
 
 #Read in the metadata
 metadata = retrieve_metadata(file_in)
-print metadata
 res = metadata['resx']
 minlat = metadata['miny'] + res/2
 minlon = metadata['minx'] + res/2
