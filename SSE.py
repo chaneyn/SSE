@@ -1,15 +1,12 @@
-import grads
-import matplotlib.pyplot as plt
 import numpy as np
-from mpl_toolkits.basemap import Basemap,pyproj
+#from mpl_toolkits.basemap import pyproj
+import pyproj
 import math
-from scipy import interpolate
 import numpy as np
 from rpy2.robjects import r
 import rpy2.robjects.numpy2ri
 rpy2.robjects.numpy2ri.activate()
 import numpy.linalg as la
-import datetime
 import time
 import pickle
 import random
@@ -21,7 +18,7 @@ from osgeo import osr
 r('library("gstat")')
 r('library("sp")')
 #Start GrADS
-ga = grads.GrADS(Bin='grads',Window=False,Echo=False)
+#ga = grads.GrADS(Bin='grads',Window=False,Echo=False)
 
 def Compute_nRMSD(data_corrected,data_baseline,undef):
  

@@ -31,13 +31,10 @@ data_measurements = Extract_Station_Data(st_coords,data,original,minlat,minlon,r
 Compute_Sample_Semivariogram(data_measurements)
 
 #Fit a model semivariogram
-vg_fit = r("v.fit <- fit.variogram(vnew,model=vgm(model='Sph',range=1000.0),fit.method=1)")
+vg_fit = r("v.fit <- fit.variogram(vnew,model=vgm(model='Sph',range=1000),fit.method=1)")
 
 #Assimilate the measurements
 corrected = Assimilate_Measurements(data_measurements,original,vg_fit,nlat,nlon,undef,res,minlat,minlon,original)
-
-#Plot the comparison
-Plot_Comparison(minlat,minlon,maxlat,maxlon,nlat,nlon,res,original,data_measurements,corrected,undef)
 
 #Write data
 write_raster(np.flipud(corrected[0]),metadata,file_out)
