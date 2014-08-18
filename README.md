@@ -6,5 +6,11 @@ You will need to install a number of python libraries before it will work. Below
 
 1. Install pip (http://pip.readthedocs.org/en/latest/installing.html). First download the get-pip.py file then run: "python get-pip.py"
 
-2. Install pyproj "pip install pyproj"
+2. Install numpy "pip install numpy"
+
+3. Install pyproj "pip install pyproj"
+
+4. Install rpy2 "pip instal rpy2" (Make sure that R 3.0.2 or higher is installed)
+
+5. Install gdal "pip install gdal"
 
