@@ -19,8 +19,11 @@ You will need to install a number of python libraries before it will work. Below
 
 Once you have installed all the libraries, you can run python2.7 driver.py. This will run the example and creates the corrected.tif file which you can read into other GIS packages.
 
-#NOTE: If when running the program you get:
+NOTE: If when running the program you get:
+
 ImportError: /usr/local/lib/python2.7/site-packages/osgeo/_gdal.so: undefined symbol: GDALRasterBandGetVirtualMem
-Then just type this
+
+Then just type this:
+
 export LD_PRELOAD=/usr/local/lib/libgdal.so.1
 
