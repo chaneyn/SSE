@@ -126,14 +126,14 @@ def Extract_Station_Data(st_coords,data,bdata,minlat,minlon,res,undef,var):
  data_measurements["lat"] = []
  for istation in xrange(0,len(data["id"])):
   idx = np.where(st_coords["id"] == data["id"][istation])
-  if len(idx[0]) > 0 and data[var][istation] >= undef:
+  if len(idx[0]) > 0:# and data[var][istation] >= undef:
    data_measurements["data"].append(data[var][istation])
    data_measurements["lon"].append(st_coords["lon"][idx[0]])
    data_measurements["lat"].append(st_coords["lat"][idx[0]])
  #Convert data to the units in NLDAS2
  data_measurements["data"] = np.array(data_measurements["data"])
  idx_valid = np.where(data_measurements["data"] > undef)
- data_measurements["data"] = Convert_Units(data_measurements["data"],var)
+ #data_measurements["data"] = Convert_Units(data_measurements["data"],var)
  #data_measurements["data"] = 5.0/9.0*(np.array(data_measurements["data"]) - 32.0)
  data_measurements["lon"] = np.array(data_measurements["lon"])
  data_measurements["lat"] = np.array(data_measurements["lat"])

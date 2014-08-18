@@ -11,6 +11,7 @@ station_coords = '/home/raid20/nchaney/Data/Met_Data/Mesonet_Test/Mesonet_Statio
 station_data_file = '/home/ice/nchaney/PROJECTS/SM_validation/SENSITIVITY/SM_LR_2001-2009_1hr.pck'#'/home/ice/nchaney/Dropbox/33883094.csv'
 file_in = 'original.tif'
 file_out = 'corrected.tif'
+file_station = 'station_data.txt'
 minlat = 31.45
 minlon = -83.78
 nlat = 40
@@ -66,9 +67,27 @@ data[var] = np.array(data[var])
 st_coords['id'] = np.array(st_coords['id'])
 st_coords['lat'] = np.array(st_coords['lat'])
 st_coords['lon'] = np.array(st_coords['lon'])
+print st_coords
+print data
+
+#Write to file
+fp = open('station_data.txt','wb')
+fp.write('id lat lon data\n')
+for id in st_coords['id']:
+ mask = st_coords['id'] == id
+ lat = st_coords['lat'][mask]
+ lon = st_coords['lon'][mask]
+ mask = data['id'] == id
+ fp.write('%d %.5f %.5f %.5f\n' % (id,lat,lon,25.4*data['apcpsfc'][mask]))
+fp.close()
+
+#Read in the station data
+station_data = np.loadtxt(file_station,skiprows=1)
+st_coords = {'id':station_data[:,0],'lat':station_data[:,1],'lon':station_data[:,2]}
+data = {'id':station_data[:,0],'data':station_data[:,3]}
 
 #Extract all the info for the stations
-data_measurements = Extract_Station_Data(st_coords,data,original,minlat,minlon,res,undef,var)
+data_measurements = Extract_Station_Data(st_coords,data,original,minlat,minlon,res,undef,'data')
 
 #Compute the sample semivariogram
 Compute_Sample_Semivariogram(data_measurements)
